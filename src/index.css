@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+/* =========================
+   ROOT VARIABLES
+========================= */
+
+:root {
+
+  /* Primary Colors - Deep Blue/Indigo */
+  --color-primary: #4F46E5;
+  --color-primary-hover: #4338CA;
+  --color-primary-light: #EEF2FF;
+
+  /* Secondary - Soft Purple */
+  --color-secondary: #7C3AED;
+  --color-secondary-hover: #6D28D9;
+
+  /* Status */
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --color-info: #3B82F6;
+
+  /* Neutral */
+  --color-white: #ffffff;
+  --color-black: #0f172a;
+
+  /* Gray scale - Zinc/Slate */
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-400: #94a3b8;
+  --gray-500: #64748b;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1e293b;
+  --gray-900: #0f172a;
+
+  /* Background */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-glass: rgba(255, 255, 255, 0.8);
+
+  /* Text */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+
+  /* Border */
+  --border-color: #e2e8f0;
+
+  /* Layout */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* Shadows - Modern Soft Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* Transition */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Container */
+  --container-width: 1200px;
+  --container-padding: 2rem;
+
+}
+
+/* =========================
+   HTML BASE
+========================= */
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* =========================
+   BODY BASE
+========================= */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =========================
+   GLOBAL RESET
+========================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* =========================
+   UTILITIES
+========================= */
+
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+@media (max-width: 640px) {
+  :root {
+    --container-padding: 1rem;
+  }
+}
+
+/* =========================
+   LINKS
+========================= */
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary);
+}
+
+/* =========================
+   BUTTON RESET
+========================= */
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+/* =========================
+   IMAGES
+========================= */
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-sm);
+}
