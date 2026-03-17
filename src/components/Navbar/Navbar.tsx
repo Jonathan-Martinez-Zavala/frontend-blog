@@ -1,8 +1,13 @@
 import React from 'react';
 import { Box, Container, Link, Stack } from '@mui/material';
+import { NavLink } from 'react-router-dom';
 
 const menuItems = [
-  { label: 'Inicio', href: '' },
+  { label: 'Inicio', path: '/home' },
+  { label: 'Categorías', path: '/categories' },
+  { label: 'Contacto', path: '/contact' },
+  { label: 'Acerca de', path: '/about' },
+  { label: 'Administrar', path: '/admin' },
 ];
 
 const Navbar: React.FC = () => {
@@ -24,7 +29,8 @@ const Navbar: React.FC = () => {
           {menuItems.map((item) => (
             <Link
               key={item.label}
-              href={item.href}
+              component={NavLink}
+              to={item.path}
               underline="none"
               sx={{
                 color: 'text.secondary',
@@ -33,7 +39,7 @@ const Navbar: React.FC = () => {
                 whiteSpace: 'nowrap',
                 transition: '0.2s',
                 position: 'relative',
-                '&:hover': {
+                '&:hover, &.active': {
                   color: 'primary.main',
                 },
                 '&::after': {
@@ -47,7 +53,7 @@ const Navbar: React.FC = () => {
                   transform: 'scaleX(0)',
                   transition: '0.2s',
                 },
-                '&:hover::after': {
+                '&:hover::after, &.active::after': {
                   transform: 'scaleX(1)',
                 },
               }}
