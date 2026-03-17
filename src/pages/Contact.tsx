@@ -1,5 +1,6 @@
 import React from 'react';
 import { Typography, Box } from '@mui/material';
+import Layout from '../components/Layout/Layout';
 
 const Contact: React.FC = () => {
   return (
@@ -10,4 +11,10 @@ const Contact: React.FC = () => {
   );
 };
 
-export default Contact;
+const ContactPage = () => (
+  <Layout>
+    <Contact />
+  </Layout>
+);
+
+export default ContactPage;

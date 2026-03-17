@@ -1,5 +1,6 @@
 import React from 'react';
 import { Typography, Box } from '@mui/material';
+import Layout from '../components/Layout/Layout';
 
 const Home: React.FC = () => {
   return (
@@ -10,4 +11,10 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+const HomePage = () => (
+  <Layout>
+    <Home />
+  </Layout>
+);
+
+export default HomePage;

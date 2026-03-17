@@ -1,5 +1,6 @@
 import React from 'react';
 import { Typography, Box } from '@mui/material';
+import Layout from '../components/Layout/Layout';
 
 const About: React.FC = () => {
   return (
@@ -10,4 +11,10 @@ const About: React.FC = () => {
   );
 };
 
-export default About;
+const Aboutpage = () => (
+  <Layout>
+    <About />
+  </Layout>
+)
+
+export default Aboutpage;

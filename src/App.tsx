@@ -1,14 +1,15 @@
-import Layout from './components/Layout/Layout';
 import { useAuth } from './context/AuthContext';
 import Login from './components/Auth/Login';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 // Pages
-import Home from './pages/Home';
-import Categories from './pages/Categories';
-import Contact from './pages/Contact';
-import About from './pages/About';
-import Admin from './pages/Admin';
+import HomePage from './pages/Home';
+import ContactPage from './pages/Contact';
+import AboutPage from './pages/About';
+import AdminPage from './pages/Admin/Admin';
+import CategoriesPage from './pages/Categories';
+import NotFound from './pages/NotFound';
+import UsuariosAdminPage from './pages/Admin/Usuarios';
 
 function App() {
   const { user } = useAuth();
@@ -20,16 +21,19 @@ function App() {
   }
 
   return (
-    <Layout>
-      <Routes>
-        <Route path="/" element={<Navigate to="/home" replace />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/categories" element={<Categories />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/admin" element={<Admin />} />
-      </Routes>
-    </Layout>
+    <Routes>
+      <Route path="/" element={<Navigate to="/home" replace />} />
+      <Route path="/home" element={<HomePage />} />
+      <Route path="/categories" element={<CategoriesPage />} />
+      <Route path="/contact" element={<ContactPage />} />
+      <Route path="/about" element={<AboutPage />} />
+      {/* Admin */}
+      <Route path="/admin" element={<AdminPage />} />
+      <Route path="/admin/users" element={<UsuariosAdminPage />} />
+      {/* Ruta 404 sin layout */}
+      <Route path="*" element={<NotFound />} />
+
+    </Routes>
   )
 }
 
