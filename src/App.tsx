@@ -10,6 +10,8 @@ import AdminPage from './pages/Admin/Admin';
 import CategoriesPage from './pages/Categories';
 import NotFound from './pages/NotFound';
 import UsuariosAdminPage from './pages/Admin/Usuarios';
+import ArticleFormPage from './pages/Admin/ArticleForm';
+import DraftsPage from './pages/Admin/Drafts';
 
 function App() {
   const { user } = useAuth();
@@ -30,6 +32,9 @@ function App() {
       {/* Admin */}
       <Route path="/admin" element={<AdminPage />} />
       <Route path="/admin/users" element={<UsuariosAdminPage />} />
+      <Route path="/admin/articles/create" element={<ArticleFormPage />} />
+      <Route path="/admin/articles/edit/:id" element={<ArticleFormPage />} />
+      <Route path="/admin/drafts" element={<DraftsPage />} />
       {/* Ruta 404 sin layout */}
       <Route path="*" element={<NotFound />} />
 

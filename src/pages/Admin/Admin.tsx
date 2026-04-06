@@ -3,6 +3,8 @@ import { Typography, Box, Card, Grid } from '@mui/material';
 import PeopleIcon from '@mui/icons-material/People';
 import ListIcon from '@mui/icons-material/List';
 import RecentActorsIcon from '@mui/icons-material/RecentActors';
+import ArticleIcon from '@mui/icons-material/Article';
+import DraftsIcon from '@mui/icons-material/Drafts';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../../components/Layout/Layout';
 
@@ -21,11 +23,23 @@ const Admin: React.FC = () => {
         onClick: () => navigate('/admin/users')
       },
       {
-        title: 'Categorias',
-        description: 'Administrar las categorías utilizadas para organizar el contenido del blog.',
-        icon: <ListIcon />,
-        onClick: () => navigate('/admin/categories')
+        title: 'Artículos',
+        description: 'Redactar y publicar nuevo contenido para el blog.',
+        icon: <ArticleIcon />,
+        onClick: () => navigate('/admin/articles/create')
       },
+      {
+        title: 'Borradores',
+        description: 'Vuelve a revisar y continuar publicando tus artículos no terminados.',
+        icon: <DraftsIcon />,
+        onClick: () => navigate('/admin/drafts')
+      },
+      // {
+      //   title: 'Categorias',
+      //   description: 'Administrar las categorías utilizadas para organizar el contenido del blog.',
+      //   icon: <ListIcon />,
+      //   onClick: () => navigate('/admin/categories')
+      // },
       {
         title: 'Contacto',
         description: 'Configurar el contacto donde los visitantes pueden enviar mensajes.',

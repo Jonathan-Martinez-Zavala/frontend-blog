@@ -37,14 +37,14 @@ const CommentSection: React.FC<CommentSectionProps> = ({ articleId, onCommentAdd
         querySnapshot.forEach((doc) => {
           fetchedComments.push({ id: doc.id, ...doc.data() } as Comment);
         });
-        
+
         // Sorting manually to avoid missing index errors in Firestore
         fetchedComments.sort((a, b) => {
-           const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
-           const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
-           return timeB - timeA;
+          const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+          const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+          return timeB - timeA;
         });
-        
+
         setComments(fetchedComments);
       } catch (error) {
         console.error("Error fetching comments:", error);
@@ -68,19 +68,19 @@ const CommentSection: React.FC<CommentSectionProps> = ({ articleId, onCommentAdd
         content: newComment,
         createdAt: serverTimestamp(),
       };
-      
+
       const docRef = await addDoc(collection(db, "articles", articleId, "comments"), commentData);
-      
+
       // Optimistic comment addition
       setComments((prev) => [{
         id: docRef.id,
         ...commentData,
         createdAt: { toMillis: () => Date.now() } // mock timestamp
       } as unknown as Comment, ...prev]);
-      
+
       setNewComment('');
       onCommentAdded();
-      
+
     } catch (error) {
       console.error("Error adding comment:", error);
     }
@@ -88,7 +88,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ articleId, onCommentAdd
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-      
+
       {user ? (
         <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', gap: 2, mb: 3 }}>
           <Avatar src={user.photoURL || undefined} alt={user.displayName || 'User'}>
