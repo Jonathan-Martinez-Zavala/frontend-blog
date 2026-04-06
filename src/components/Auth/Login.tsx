@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
   Grid,
-  Typography
+  Typography,
+  CircularProgress,
+  Backdrop
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 import googleIcon from '../../assets/google.svg';
 import collabImage from '../../assets/Collab-bro.png';
@@ -18,15 +21,40 @@ import { auth } from '../../firebase';
 
 const Login: React.FC = () => {
   const provider = new GoogleAuthProvider();
+  const navigate = useNavigate();
+  const [isFakeLoading, setIsFakeLoading] = useState(true);
+
+  // Simulamos un loader inicial al entrar al login
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsFakeLoading(false);
+    }, 2000); 
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleGoogleLogin = async () => {
     try {
       await signInWithPopup(auth, provider);
       console.log('Login con Google correcto');
+      navigate('/home'); // Redirección forzada siempre a home
     } catch (error) {
       console.error('Error con Google login', error);
     }
   };
+
+  if (isFakeLoading) {
+    return (
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1, bgcolor: 'background.default', flexDirection: 'column', gap: 2 }}
+        open={true}
+      >
+        <CircularProgress color="primary" />
+        <Typography variant="body1" color="text.primary" fontWeight="bold">
+          Cargando entorno seguro...
+        </Typography>
+      </Backdrop>
+    );
+  }
 
   return (
     <Grid
@@ -39,7 +67,6 @@ const Login: React.FC = () => {
         bgcolor: 'background.default'
       }}
     >
-
       {/* Lado izquierdo - Ilustración */}
       <Grid
         size={{ md: 6 }}

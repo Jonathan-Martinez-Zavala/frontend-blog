@@ -16,12 +16,13 @@ import { db } from '../firebase';
 import { doc, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Chip } from '@mui/material';
+import LoginModal from '../components/Auth/LoginModal';
 
 interface Article {
   id: string;
-
   authorName: string;
   authorId?: string;
+  authorPhotoURL?: string;
   categoryName: string;
 
   commentsCount: number;
@@ -52,8 +53,9 @@ const Home: React.FC = () => {
   // Estados interactivos
   const [likedArticles, setLikedArticles] = useState<Record<string, boolean>>({});
   const [expandedCommentsId, setExpandedCommentsId] = useState<string | null>(null);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-  const { user } = useAuth();
+  const { user, role } = useAuth();
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -114,10 +116,9 @@ const Home: React.FC = () => {
 
   const handleLike = async (articleId: string, currentLikes: number) => {
     if (!user) {
-      alert("Debes iniciar sesión para dar me gusta.");
+      setIsLoginModalOpen(true);
       return;
     }
-
     const isLiked = likedArticles[articleId];
     const newLikesCount = isLiked ? currentLikes - 1 : currentLikes + 1;
 
@@ -143,40 +144,36 @@ const Home: React.FC = () => {
       // Se actualiza el contador general en el artículo
       await updateDocument('articles', articleId, { likesCount: newLikesCount });
     } catch (error) {
-      console.error("Error al dar 'Like':", error);
+      console.error("Error al reaccionar:", error);
       // Revertir en caso de error
       setArticles(prev => prev.map(a => a.id === articleId ? { ...a, likesCount: currentLikes } : a));
       setLikedArticles(prev => ({ ...prev, [articleId]: isLiked }));
     }
   };
 
-  const handleToggleComments = (articleId: string) => {
-    setExpandedCommentsId(prev => prev === articleId ? null : articleId);
+  const handleToggleComments = (id: string) => {
+    if (!user) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+    setExpandedCommentsId(expandedCommentsId === id ? null : id);
   };
 
-  const handleShare = async (title: string, content: string) => {
-    // Si la Web Share API está disponible (móvil, algunos desktop)
-    const shareData = {
-      title: title,
-      text: content.substring(0, 50) + '...',
-      url: window.location.href, // o url específica del articulo
-    };
-
+  const handleShare = (title: string, content: string, id: string) => {
+    if (!user) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+    const shareUrl = `${window.location.origin}/article/${id}`;
     if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-        console.log('Compartido con exito');
-      } catch (err) {
-        console.log('Error compartiendo', err);
-      }
+      navigator.share({
+        title: title,
+        text: content.substring(0, 50),
+        url: shareUrl,
+      });
     } else {
-      // Fallback a copiar puerto papeles
-      try {
-        await navigator.clipboard.writeText(`${title} - ${window.location.href}`);
-        alert('¡Enlace copiado al portapapeles!');
-      } catch (err) {
-        console.error('Error al copiar al portapapeles:', err);
-      }
+      navigator.clipboard.writeText(shareUrl);
+      alert('Enlace copiado al portapapeles');
     }
   };
 
@@ -224,14 +221,17 @@ const Home: React.FC = () => {
                 <CardHeader
                   sx={{ p: 0, mb: 1.5 }}
                   avatar={
-                    <Avatar sx={{ width: 36, height: 36, fontSize: '0.9rem' }}>
+                    <Avatar 
+                      src={article.authorPhotoURL || ''} 
+                      sx={{ width: 36, height: 36, fontSize: '0.9rem' }}
+                    >
                       {article.authorName.charAt(0)}
                     </Avatar>
                   }
                   title={article.authorName}
                   titleTypographyProps={{ variant: 'subtitle2', fontWeight: 600 }}
                   action={
-                    user && (!article.authorId || article.authorId === user.uid) ? (
+                    user && role === 'admin' ? (
                       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', mr: 1, mt: 1 }}>
                         {article.status === 'draft' && (
                           <Chip label="Borrador" size="small" color="warning" variant="outlined" sx={{ height: 24, fontSize: '0.7rem' }} />
@@ -270,18 +270,18 @@ const Home: React.FC = () => {
                     {article.title}
                   </Typography>
 
-                  {/* Contenido */}
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{
-                      mb: 1.5,
-                      fontSize: '0.85rem',
-                      whiteSpace: 'pre-wrap' // Permite mantener saltos de línea y formateos espacios
-                    }}
-                  >
-                    {article.content}
-                  </Typography>
+                {/* Contenido Completo */}
+                <Typography 
+                  variant="body2" 
+                  color="text.secondary" 
+                  sx={{ 
+                    mb: 1.5, 
+                    fontSize: '0.85rem',
+                    whiteSpace: 'pre-wrap'
+                  }}
+                >
+                  {article.content}
+                </Typography>
 
                   <Divider sx={{ my: 1.5 }} />
 
@@ -325,7 +325,7 @@ const Home: React.FC = () => {
                       spacing={1}
                       alignItems="center"
                       sx={{ cursor: 'pointer' }}
-                      onClick={() => handleShare(article.title, article.content)}
+                      onClick={() => handleShare(article.title, article.content, article.id)}
                     >
                       <ShareOutlinedIcon fontSize="small" />
                       <Typography variant="body2">
@@ -386,6 +386,7 @@ const Home: React.FC = () => {
           </Box>
         )}
       </Drawer>
+      <LoginModal open={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
     </Box>
   );
 };

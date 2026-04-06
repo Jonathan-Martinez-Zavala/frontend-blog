@@ -73,22 +73,22 @@ const ArticleForm: React.FC = () => {
         categoryId,
         categoryName: selectedCategory?.name || '',
         slug: createSlug(title),
-        status
+        status,
+        authorName: user?.displayName || 'Anónimo',
+        authorId: user?.uid || null,
+        authorPhotoURL: user?.photoURL || null
       };
 
       if (id) {
         // Actualizar existente
         await updateDocument('articles', id, {
           ...articlePayload,
-          excerpt: content.substring(0, 100) + '...'
+          updatedAt: serverTimestamp()
         });
       } else {
         // Crear nuevo
         await addDoc(collection(db, 'articles'), {
           ...articlePayload,
-          excerpt: content.substring(0, 100) + '...',
-          authorName: user?.displayName || 'Anónimo',
-          authorId: user?.uid || null,
           views: 0,
           likesCount: 0,
           commentsCount: 0,

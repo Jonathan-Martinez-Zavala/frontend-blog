@@ -12,34 +12,42 @@ import NotFound from './pages/NotFound';
 import UsuariosAdminPage from './pages/Admin/Usuarios';
 import ArticleFormPage from './pages/Admin/ArticleForm';
 import DraftsPage from './pages/Admin/Drafts';
+import ArticleDetailsPage from './pages/ArticleDetails';
 
-function App() {
-  const { user } = useAuth();
+const AdminRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, role, loading } = useAuth();
+  
+  if (loading) return null; // Esperar a que el rol se cargue
 
-  if (!user) {
-    return (
-      <Login />
-    );
+  if (!user || role !== 'admin') {
+    return <Navigate to="/home" replace />;
   }
 
+  return <>{children}</>;
+};
+
+function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/home" replace />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/home" element={<HomePage />} />
+      <Route path="/article/:id" element={<ArticleDetailsPage />} />
       <Route path="/categories" element={<CategoriesPage />} />
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/about" element={<AboutPage />} />
-      {/* Admin */}
-      <Route path="/admin" element={<AdminPage />} />
-      <Route path="/admin/users" element={<UsuariosAdminPage />} />
-      <Route path="/admin/articles/create" element={<ArticleFormPage />} />
-      <Route path="/admin/articles/edit/:id" element={<ArticleFormPage />} />
-      <Route path="/admin/drafts" element={<DraftsPage />} />
+
+      {/* Admin - Protected */}
+      <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
+      <Route path="/admin/users" element={<AdminRoute><UsuariosAdminPage /></AdminRoute>} />
+      <Route path="/admin/articles/create" element={<AdminRoute><ArticleFormPage /></AdminRoute>} />
+      <Route path="/admin/articles/edit/:id" element={<AdminRoute><ArticleFormPage /></AdminRoute>} />
+      <Route path="/admin/drafts" element={<AdminRoute><DraftsPage /></AdminRoute>} />
+
       {/* Ruta 404 sin layout */}
       <Route path="*" element={<NotFound />} />
-
     </Routes>
-  )
+  );
 }
 
 export default App
