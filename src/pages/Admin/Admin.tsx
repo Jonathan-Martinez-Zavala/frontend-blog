@@ -41,7 +41,7 @@ const Admin: React.FC = () => {
       </Typography>
 
       <Typography color="text.secondary">
-        Panel de gestión (Solo administradores).
+        Panel de gestión (Solo administrador).
       </Typography>
 
       <Grid container spacing={3} sx={{ mt: 4 }}>

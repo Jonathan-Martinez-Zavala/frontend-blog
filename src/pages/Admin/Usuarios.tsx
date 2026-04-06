@@ -3,6 +3,7 @@ import { Typography, Box, Avatar, List, ListItem, ListItemAvatar, ListItemText, 
 import Layout from '../../components/Layout/Layout';
 import BackButton from '../../components/BackButton';
 import { getAll } from '../../firebase';
+import Loader from '../../components/Loader';
 
 interface User {
     uid: string;
@@ -59,9 +60,7 @@ const UsuariosAdmin: React.FC = () => {
             {/* Lista de usuarios */}
             <List>
                 {isLoading ? (
-                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
-                        <CircularProgress />
-                    </Box>
+                    <Loader />
                 ) : filteredUsers.map((user, index) => (
                     <React.Fragment key={user.id}>
                         <ListItem sx={{ bgcolor: 'background.paper' }}>

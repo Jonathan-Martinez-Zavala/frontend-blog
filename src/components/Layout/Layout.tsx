@@ -20,7 +20,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Box
         component="footer"
         sx={{
-          py: 6,
+          py: 3,
           borderTop: '1px solid',
           borderColor: 'divider',
           bgcolor: 'background.paper',
@@ -29,7 +29,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       >
         <Container maxWidth="lg">
           <Typography variant="body2" color="text.secondary">
-            &copy; {new Date().getFullYear()} RicoBlog.
+            &copy; {new Date().getFullYear()} JC|RR.
           </Typography>
         </Container>
       </Box>

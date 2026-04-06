@@ -31,14 +31,10 @@ const Header: React.FC = () => {
       <Container maxWidth="lg">
         <Toolbar disableGutters sx={{ height: 80 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1, gap: 1 }}>
-            <RocketLaunchIcon sx={{ color: 'primary.main', fontSize: 32 }} />
-            <Typography
-              variant="h5"
-              noWrap
-              component="div"
-              sx={{ fontWeight: 700, letterSpacing: '-0.5px' }}
-            >
-              Rico<Box component="span" sx={{ color: 'primary.main' }}>Blog</Box>
+            <Typography variant="h5" fontWeight="light" letterSpacing="3px" gutterBottom>
+              <Box component="span" color="primary.main">JC</Box>
+              <Box component="span" color="secondary.main">|</Box>
+              <Box component="span" color="primary.main">RR</Box>
             </Typography>
           </Box>
 

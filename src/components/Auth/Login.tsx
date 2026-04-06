@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Button,
   Grid,
-  TextField,
-  Typography,
-  Divider
+  Typography
 } from '@mui/material';
 
 import googleIcon from '../../assets/google.svg';
 import collabImage from '../../assets/Collab-bro.png';
 
 import {
-  signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup
 } from 'firebase/auth';
@@ -20,20 +17,7 @@ import {
 import { auth } from '../../firebase';
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
   const provider = new GoogleAuthProvider();
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log('Login correcto');
-    } catch (error) {
-      console.error('Error al iniciar sesión', error);
-    }
-  };
 
   const handleGoogleLogin = async () => {
     try {
@@ -51,13 +35,14 @@ const Login: React.FC = () => {
         minHeight: '100vh',
         width: '100vw',
         m: 0,
-        p: 0
+        p: 0,
+        bgcolor: 'background.default'
       }}
     >
 
-      {/* Lado izquierdo */}
+      {/* Lado izquierdo - Ilustración */}
       <Grid
-        size={{ md: 6, lg: 6 }}
+        size={{ md: 6 }}
         sx={{
           display: { xs: 'none', md: 'block' }
         }}
@@ -71,7 +56,7 @@ const Login: React.FC = () => {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '10px'
+            gap: '20px'
           }}
         >
           <Box
@@ -85,85 +70,52 @@ const Login: React.FC = () => {
               height: '500px'
             }}
           />
-          <Typography variant="body1" fontWeight="bold" textAlign="center">
+          <Typography variant="h5" fontWeight="bold" textAlign="center" color="primary">
             “El cambio es inevitable, pero el crecimiento es una elección.”
           </Typography>
 
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body1" color="text.secondary">
             — John C. Maxwell
           </Typography>
         </Box>
       </Grid>
 
-      {/* Lado derecho */}
-      <Grid size={{ xs: 12, md: 6, lg: 6 }}>
+      {/* Lado derecho - Inicio de sesión */}
+      <Grid size={{ xs: 12, md: 6 }}>
         <Box
           sx={{
             height: '100%',
             p: 4,
-            bgcolor: 'background.default',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
+            bgcolor: 'background.default'
           }}
         >
-          {/* <Box
-            sx={{
-              backgroundImage: `url(${collabImage})`,
-              backgroundSize: 'contain',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat',
-              width: '100%',
-              maxWidth: '200px',
-              height: '200px',
-            }}
-          /> */}
-
           <Box
-            component="form"
-            onSubmit={handleLogin}
             sx={{
               width: '100%',
-              maxWidth: '420px',
+              maxWidth: '400px',
+              textAlign: 'center',
               display: 'flex',
               flexDirection: 'column',
-              gap: 2
+              gap: 4
             }}
           >
-
-            <Typography variant="h5" fontWeight="bold">
-              Inicio de sesión
-            </Typography>
-
-            <TextField
-              label="Correo"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              fullWidth
-              required
-            />
-
-            <TextField
-              label="Contraseña"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              fullWidth
-              required
-            />
-
-            <Button
-              type="submit"
-              variant="contained"
-              size="large"
-              fullWidth
-            >
-              Iniciar sesión
-            </Button>
-
-            <Divider>o</Divider>
+            <Box>
+              <Typography variant="h2" fontWeight="light" letterSpacing="3px" gutterBottom>
+                <Box component="span" color="primary.main">JC</Box>
+                <Box component="span" color="secondary.main">|</Box>
+                <Box component="span" color="primary.main">RR</Box>
+              </Typography>
+              <Typography variant="h4" fontWeight="bold" gutterBottom>
+                Bienvenido
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                Inicia sesión para continuar y ver las últimas publicaciones.
+              </Typography>
+            </Box>
 
             <Button
               size="large"
@@ -176,6 +128,9 @@ const Login: React.FC = () => {
               Continuar con Google
             </Button>
 
+            <Typography variant="caption" color="text.secondary">
+              Al continuar, aceptas nuestros términos de servicio y política de privacidad.
+            </Typography>
           </Box>
         </Box>
       </Grid>

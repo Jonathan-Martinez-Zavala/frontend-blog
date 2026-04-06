@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import { collection, doc, getDoc, getDocs, getFirestore } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, getFirestore, updateDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDEHLE-aYHXtNwEBDVqnLxOd5ElvOOHvVE",
@@ -27,7 +27,7 @@ export const db = getFirestore(app);
 // Obtener todos los documentos de una colección
 // ===============================
 
-export const getAll = async <T = { uid: string, displayName: string, email: string, photoURL: string, role: string }>(collectionName: string): Promise<(T & { id: string })[]> => {
+export const getAll = async <T>(collectionName: string): Promise<(T & { id: string })[]> => {
   const snapshot = await getDocs(collection(db, collectionName));
 
   return snapshot.docs.map(doc => ({
@@ -51,6 +51,16 @@ export const getById = async <T = any>(
     id: snap.id,
     ...snap.data()
   } as T & { id: string };
+};
+
+// Actualizar un documento
+export const updateDocument = async (
+  collectionName: string,
+  id: string,
+  data: any
+): Promise<void> => {
+  const ref = doc(db, collectionName, id);
+  await updateDoc(ref, data);
 };
 
 export default app;
