@@ -6,14 +6,14 @@
 
 :root {
 
-  /* Primary Colors - Deep Blue/Indigo */
-  --color-primary: #4F46E5;
-  --color-primary-hover: #4338CA;
-  --color-primary-light: #EEF2FF;
+  /* Primary Colors - Azul */
+  --color-primary: #1F3A5F;
+  --color-primary-hover: #162a45;
+  --color-primary-light: #f0f4f8;
 
-  /* Secondary - Soft Purple */
-  --color-secondary: #7C3AED;
-  --color-secondary-hover: #6D28D9;
+  /* Secondary - Dorado */
+  --color-secondary: #C8A75D;
+  --color-secondary-hover: #b39552;
 
   /* Status */
   --color-success: #10B981;
@@ -25,30 +25,30 @@
   --color-white: #ffffff;
   --color-black: #0f172a;
 
-  /* Gray scale - Zinc/Slate */
-  --gray-50: #f8fafc;
-  --gray-100: #f1f5f9;
-  --gray-200: #e2e8f0;
-  --gray-300: #cbd5e1;
-  --gray-400: #94a3b8;
-  --gray-500: #64748b;
-  --gray-600: #475569;
-  --gray-700: #334155;
-  --gray-800: #1e293b;
-  --gray-900: #0f172a;
+  /* Gray scale */
+  --gray-50: #F3F4F6;
+  --gray-100: #E5E7EB;
+  --gray-200: #D1D5DB;
+  --gray-300: #9CA3AF;
+  --gray-400: #6B7280;
+  --gray-500: #4B5563;
+  --gray-600: #374151;
+  --gray-700: #1F2937;
+  --gray-800: #111827;
+  --gray-900: #030712;
 
   /* Background */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --bg-glass: rgba(255, 255, 255, 0.8);
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F3F4F6;
+  --bg-glass: rgba(255, 255, 255, 0.9);
 
   /* Text */
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
+  --text-primary: #1F3A5F;
+  --text-secondary: #6B7280;
+  --text-muted: #9CA3AF;
 
   /* Border */
-  --border-color: #e2e8f0;
+  --border-color: #E5E7EB;
 
   /* Layout */
   --radius-sm: 6px;
@@ -80,6 +80,7 @@ html {
   font-size: 16px;
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  letter-spacing: 0.090em;
 }
 
 /* =========================
@@ -89,7 +90,7 @@ html {
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
   background: var(--bg-secondary);
   color: var(--text-primary);
   line-height: 1.6;
