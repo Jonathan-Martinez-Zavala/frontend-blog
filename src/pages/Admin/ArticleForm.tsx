@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, TextField, Button, Grid, MenuItem, Snackbar, Alert } from '@mui/material';
 import Layout from '../../components/Layout/Layout';
+import BackButton from '../../components/BackButton';
 import { db, getAll, getById, updateDocument } from '../../firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useAuth } from '../../context/AuthContext';
@@ -110,9 +111,12 @@ const ArticleForm: React.FC = () => {
 
   return (
     <Box sx={{ maxWidth: 800, mx: 'auto', p: 3, bgcolor: 'background.paper', borderRadius: 2, boxShadow: '0 0 10px rgba(0,0,0,0.05)' }}>
-      <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }}>
-        {id ? 'Editar Artículo' : 'Crear Nuevo Artículo'}
-      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+        <BackButton />
+        <Typography variant="h5" fontWeight="bold">
+          {id ? 'Editar Artículo' : 'Crear Nuevo Artículo'}
+        </Typography>
+      </Box>
 
       <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
 

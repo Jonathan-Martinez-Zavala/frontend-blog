@@ -1,7 +1,6 @@
 import React from 'react';
 import { Typography, Box, Card, Grid } from '@mui/material';
 import PeopleIcon from '@mui/icons-material/People';
-import ListIcon from '@mui/icons-material/List';
 import RecentActorsIcon from '@mui/icons-material/RecentActors';
 import ArticleIcon from '@mui/icons-material/Article';
 import DraftsIcon from '@mui/icons-material/Drafts';

@@ -15,7 +15,9 @@ import { useAuth } from '../context/AuthContext';
 import { db } from '../firebase';
 import { doc, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import { Chip } from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { Chip, Menu, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 import LoginModal from '../components/Auth/LoginModal';
 
 interface Article {
@@ -54,6 +56,8 @@ const Home: React.FC = () => {
   const [likedArticles, setLikedArticles] = useState<Record<string, boolean>>({});
   const [expandedCommentsId, setExpandedCommentsId] = useState<string | null>(null);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedArticleId, setSelectedArticleId] = useState<string | null>(null);
 
   const { user, role } = useAuth();
 
@@ -177,6 +181,30 @@ const Home: React.FC = () => {
     }
   };
 
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, articleId: string) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedArticleId(articleId);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setSelectedArticleId(null);
+  };
+
+  const handleDeleteArticle = async () => {
+    if (!selectedArticleId) return;
+    if (window.confirm('¿Estás seguro de que quieres eliminar este artículo?')) {
+      try {
+        await deleteDoc(doc(db, 'articles', selectedArticleId));
+        setArticles(prev => prev.filter(a => a.id !== selectedArticleId));
+        handleMenuClose();
+      } catch (error) {
+        console.error("Error al eliminar el artículo:", error);
+        alert("Hubo un error al intentar eliminar el artículo.");
+      }
+    }
+  };
+
   return (
     <Box>
       {/* <Typography variant="h4" sx={{ fontWeight: 700, mb: 2 }}>Inicio</Typography>
@@ -236,8 +264,8 @@ const Home: React.FC = () => {
                         {article.status === 'draft' && (
                           <Chip label="Borrador" size="small" color="warning" variant="outlined" sx={{ height: 24, fontSize: '0.7rem' }} />
                         )}
-                        <IconButton size="small" onClick={() => navigate(`/admin/articles/edit/${article.id}`)}>
-                          <EditOutlinedIcon fontSize="small" />
+                        <IconButton size="small" onClick={(e) => handleMenuOpen(e, article.id)}>
+                          <MoreVertIcon fontSize="small" />
                         </IconButton>
                       </Box>
                     ) : null
@@ -387,6 +415,35 @@ const Home: React.FC = () => {
         )}
       </Drawer>
       <LoginModal open={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
+
+      {/* Menú de Opciones para Admin */}
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        PaperProps={{
+          sx: {
+            minWidth: 150,
+            boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+            borderRadius: 2
+          }
+        }}
+      >
+        <MenuItem onClick={() => { navigate(`/admin/articles/edit/${selectedArticleId}`); handleMenuClose(); }}>
+          <ListItemIcon>
+            <EditOutlinedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Editar</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={handleDeleteArticle} sx={{ color: 'error.main' }}>
+          <ListItemIcon>
+            <DeleteOutlineIcon fontSize="small" color="error" />
+          </ListItemIcon>
+          <ListItemText>Eliminar</ListItemText>
+        </MenuItem>
+      </Menu>
     </Box>
   );
 };

@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Card, IconButton, List, ListItem, ListItemText, ListItemSecondaryAction, Divider } from '@mui/material';
+import { Box, Typography, Card, IconButton, List, ListItem, ListItemText, ListItemSecondaryAction, Divider, Menu, MenuItem, ListItemIcon } from '@mui/material';
 import Layout from '../../components/Layout/Layout';
+import BackButton from '../../components/BackButton';
 import { getAll } from '../../firebase';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Loader from '../../components/Loader';
+import { db } from '../../firebase';
+import { doc, deleteDoc } from 'firebase/firestore';
 
 const Drafts: React.FC = () => {
   const [drafts, setDrafts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedArticleId, setSelectedArticleId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchDrafts = async () => {
@@ -30,11 +37,38 @@ const Drafts: React.FC = () => {
     }
   }, [user]);
 
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, articleId: string) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedArticleId(articleId);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setSelectedArticleId(null);
+  };
+
+  const handleDeleteArticle = async () => {
+    if (!selectedArticleId) return;
+    if (window.confirm('¿Estás seguro de que quieres eliminar este borrador?')) {
+      try {
+        await deleteDoc(doc(db, 'articles', selectedArticleId));
+        setDrafts(prev => prev.filter(a => a.id !== selectedArticleId));
+        handleMenuClose();
+      } catch (error) {
+        console.error("Error al eliminar el borrador:", error);
+        alert("Hubo un error al intentar eliminar el borrador.");
+      }
+    }
+  };
+
   return (
     <Box sx={{ maxWidth: 800, mx: 'auto', p: 3, pt: { xs: 2, md: 5 } }}>
-      <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }}>
-        Mis Borradores
-      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+        <BackButton />
+        <Typography variant="h5" fontWeight="bold">
+          Mis Borradores
+        </Typography>
+      </Box>
       
       {isLoading ? (
         <Loader />
@@ -55,8 +89,8 @@ const Drafts: React.FC = () => {
                     primaryTypographyProps={{ fontWeight: 600, variant: 'subtitle1' }}
                   />
                   <ListItemSecondaryAction>
-                    <IconButton edge="end" onClick={() => navigate(`/admin/articles/edit/${draft.id}`)} title="Continuar editando">
-                      <EditOutlinedIcon color="primary" />
+                    <IconButton edge="end" onClick={(e) => handleMenuOpen(e, draft.id)} title="Opciones">
+                      <MoreVertIcon />
                     </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -66,6 +100,35 @@ const Drafts: React.FC = () => {
           </List>
         </Card>
       )}
+
+      {/* Menú de Opciones */}
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        PaperProps={{
+          sx: {
+            minWidth: 150,
+            boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+            borderRadius: 2
+          }
+        }}
+      >
+        <MenuItem onClick={() => { navigate(`/admin/articles/edit/${selectedArticleId}`); handleMenuClose(); }}>
+          <ListItemIcon>
+            <EditOutlinedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Editar</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={handleDeleteArticle} sx={{ color: 'error.main' }}>
+          <ListItemIcon>
+            <DeleteOutlineIcon fontSize="small" color="error" />
+          </ListItemIcon>
+          <ListItemText>Eliminar</ListItemText>
+        </MenuItem>
+      </Menu>
     </Box>
   );
 };

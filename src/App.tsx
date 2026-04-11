@@ -12,6 +12,7 @@ import NotFound from './pages/NotFound';
 import UsuariosAdminPage from './pages/Admin/Usuarios';
 import ArticleFormPage from './pages/Admin/ArticleForm';
 import DraftsPage from './pages/Admin/Drafts';
+import ContactAdminPage from './pages/Admin/ContactAdmin';
 import ArticleDetailsPage from './pages/ArticleDetails';
 
 const AdminRoute = ({ children }: { children: React.ReactNode }) => {
@@ -43,6 +44,7 @@ function App() {
       <Route path="/admin/articles/create" element={<AdminRoute><ArticleFormPage /></AdminRoute>} />
       <Route path="/admin/articles/edit/:id" element={<AdminRoute><ArticleFormPage /></AdminRoute>} />
       <Route path="/admin/drafts" element={<AdminRoute><DraftsPage /></AdminRoute>} />
+      <Route path="/admin/contact" element={<AdminRoute><ContactAdminPage /></AdminRoute>} />
 
       {/* Ruta 404 sin layout */}
       <Route path="*" element={<NotFound />} />
