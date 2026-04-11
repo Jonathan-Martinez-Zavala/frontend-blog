@@ -22,7 +22,7 @@ const About: React.FC = () => {
           borderRadius: 4,
           mb: 6,
           background:
-            'linear-gradient(rgba(31, 58, 95, 0.82), rgba(31, 58, 95, 0.45)), url("/about_hero_background_1775946472367.png")',
+            'linear-gradient(rgba(31, 58, 95, 0.82), rgba(31, 58, 95, 0.45))',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
